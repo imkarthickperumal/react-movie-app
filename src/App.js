@@ -1,25 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import React from "react";
+import axios from "axios";
+import Card from "./components/Card";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      movie: [],
+    };
+  }
+
+  componentDidMount = async () => {
+    try {
+      const response = await axios.get(
+        "https://www.omdbapi.com/?apikey=45f0782a&s=war"
+      );
+      
+      this.setState({
+        movie: response.data.Search,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  render() {
+    return (
+      <div>
+        <h1>App</h1>
+        <Card movieList={this.state.movie} />
+      </div>
+    );
+  }
 }
 
 export default App;
